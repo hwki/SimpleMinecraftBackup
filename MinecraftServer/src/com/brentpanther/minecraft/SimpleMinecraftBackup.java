@@ -11,12 +11,15 @@ public class SimpleMinecraftBackup {
 	private Process p;
 	public ServerListener sl;
 	private BufferedWriter bw;
+	private CommandListener cl;
 	
 	public SimpleMinecraftBackup(Integer backupMinutes) throws IOException {
-		ProcessBuilder builder = new ProcessBuilder("java", "-jar", "minecraft_server.jar");
+		ProcessBuilder builder = new ProcessBuilder("java", "-jar", "minecraft_server.jar", "nogui");
 		builder.redirectErrorStream(true);
 		p = builder.start();
 		bw = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+		cl = new CommandListener(this);
+		new Thread(cl).start();
 		BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		sl = new ServerListener(br);
 		new Thread(sl).start();

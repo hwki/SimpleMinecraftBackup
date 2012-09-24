@@ -30,6 +30,7 @@ public class ServerListener implements Runnable {
 		String line = null;
 		try {
 			while((line = br.readLine()) != null) {
+				System.out.println(line);
 				String scrubbedLine = line.substring(line.indexOf("]")+2);
 				for (Listener listen : listeners) {
 					if(scrubbedLine.matches(listen.getMatcher() + ".*")) {
